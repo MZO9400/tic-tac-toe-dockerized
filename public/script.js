@@ -34,7 +34,20 @@ function isGameOver() {
     }
 }
 
+const isDraw = () => {
+    const board = getBoardState()
+    for (let cell in board)
+        if (board[cell] === "")
+            return false
+    return true
+}
+
 function renderTurnMessage() {
+    if (isDraw()) {
+        $("#messages").text("Game drawn!");
+        $(".board button").attr("disabled", true);
+        return
+    }
     if (!myTurn) {
         $("#messages").text("Your opponent's turn");
         $(".board button").attr("disabled", true);
