@@ -1,0 +1,9 @@
+{
+ "AWSEBDockerrunVersion": "1",
+ "Image": {
+  "Name": "mzo9400/tic-tac-toe-mp"
+ },
+ "Ports": [{
+  "ContainerPort": "8080"
+ }]
+}
