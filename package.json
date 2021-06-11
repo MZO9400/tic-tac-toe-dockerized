@@ -13,5 +13,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
-  }
+  },
+  "repository": "git@github.com:MZO9400/tic-tac-toe-dockerized.git",
+  "author": "MZO9400 <hamza.hameed00@yahoo.com>"
 }

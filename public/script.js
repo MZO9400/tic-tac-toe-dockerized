@@ -105,7 +105,22 @@ socket.on("opponent.left", function() {
     $(".board button").attr("disabled", true);
 });
 
+socket.on("players", function(data) {
+    console.log(data)
+})
+
+socket.on("player.connect", function(data) {
+    const {id, name} = data
+    $("#players").append(`<li id="${id}">${name}</li>`)
+})
+socket.on("player.disconnect", function(data) {
+    console.log('removing', data);
+    $(`#${data}`).remove()
+})
+
 $(function() {
+    const name = prompt("Enter your name")
+    socket.emit('name', name)
     $(".board button").attr("disabled", true);
     $(".board> button").on("click", makeMove);
 });

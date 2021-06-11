@@ -31,7 +31,7 @@ io.sockets.on("connection", socket => {
 
     socket.on("disconnect", () => {
         removeClient(socket);
-        socket.broadcast.emit("clientdisconnect", id);
+        socket.broadcast.emit("player.disconnect", id);
     });
 });
 
@@ -57,6 +57,8 @@ const joinGame = socket => {
 }
 
 const getOpponent = socket => {
+    if (!players[socket.id])
+        return;
     if (!players[socket.id].opponent) {
         return;
     }
@@ -64,26 +66,29 @@ const getOpponent = socket => {
 }
 
 io.on("connection", socket => {
-    joinGame(socket);
-    if (getOpponent(socket)) {
-        socket.emit("game.begin", {
-            symbol: players[socket.id].symbol
-        });
-        getOpponent(socket).emit("game.begin", {
-            symbol: players[getOpponent(socket).id].symbol
-        });
-    }
-
     socket.on("make.move", data => {
         if (!getOpponent(socket))
             return;
         socket.emit("move.made", data);
         getOpponent(socket).emit("move.made", data);
     });
-
     socket.on("disconnect", () => {
         if (getOpponent(socket)) {
             getOpponent(socket).emit("opponent.left");
         }
     });
+    socket.on('name', data => {
+        const id = socket.id
+        clients[id].name = data
+        socket.broadcast.emit("player.connect", {id, name: data});
+        joinGame(socket);
+        if (getOpponent(socket)) {
+            socket.emit("game.begin", {
+                symbol: players[socket.id].symbol,
+            });
+            getOpponent(socket).emit("game.begin", {
+                symbol: players[getOpponent(socket).id].symbol
+            });
+        }
+    })
 });
