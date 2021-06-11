@@ -35,8 +35,8 @@ io.sockets.on("connection", socket => {
     });
 });
 
-var players = {},
-    unmatched;
+const players = {};
+let unmatched;
 
 const joinGame = socket => {
     players[socket.id] = {
