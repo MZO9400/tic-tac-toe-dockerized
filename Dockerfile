@@ -1,7 +1,7 @@
 FROM node:14
 
 EXPOSE 8080
-CMD [ "node", "start" ]
+CMD [ "yarn", "start" ]
 
 WORKDIR /usr/src/app
 COPY package.json ./
